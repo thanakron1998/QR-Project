@@ -1,0 +1,89 @@
+<body>
+    <div class="d-flex justify-content-center">
+        <div class="w-75">
+            <!-- Input Group -->
+            <div class="my-4">
+               <div class="row g-4 align-items-center mb-3">
+                    <!-- Label -->
+                    <div class="col-auto">
+                        <label class="fw-bold mb-0">รหัสสินค้า</label>
+                    </div>
+
+                    <!-- Input -->
+                    <div class="col">
+                        <input type="text"
+                            class="form-control"
+                            maxlength="35"
+                            placeholder="XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX"
+                            #qrInputRef
+                            (input)="formatQrInput(qrInputRef)">
+                    </div>
+
+                    <!-- Button -->
+                    <div class="col-auto">
+                        <button class="btn btn-primary" (click)="addQR(qrInputRef)">
+                        ADD
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTTOM: Table -->
+            <div class="table-responsive mt-4">
+                <table id="qrTable" class="table-bordered">
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unified Modal -->
+    <div class="modal fade" 
+        [class.show]="modalMode !== null" 
+        [style.display]="modalMode !== null ? 'block' : 'none'" 
+        tabindex="-1" 
+        aria-labelledby="qrModalLabel" 
+        aria-hidden="{{modalMode === null}}">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3 text-center">
+
+        <!-- Modal Body -->
+        <div class="modal-body">
+            <!-- QR Code display -->
+            <qrcode *ngIf="modalMode === 'view'" 
+                    [qrdata]="selectedQRCode || ''" 
+                    [width]="256" 
+                    [errorCorrectionLevel]="'M'" 
+                    [allowEmptyString]="true">
+            </qrcode>
+
+            <!-- Delete confirmation -->
+            <div *ngIf="modalMode === 'delete'" style="text-align: left;">
+                ต้องการลบข้อมูล รหัสสินค้า {{ selectedQRCode }} หรือไม่ ?
+            </div>
+
+            <!-- Error message -->
+            <div *ngIf="modalMode === 'message'">
+            {{ message }}
+            </div>
+
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="modal-footer justify-content-end" style="border: none;">
+            <!-- Close button -->
+            <button *ngIf="modalMode === 'view' || modalMode === 'message'" type="button" class="btn btn-primary" (click)="closeModal()">Close</button>    
+            <!-- Delete buttons -->
+            <button *ngIf="modalMode === 'delete'" type="button" class="btn btn-primary" (click)="deleteQR()">ตกลง</button>
+            <button *ngIf="modalMode === 'delete'" type="button" class="btn btn-danger" (click)="closeModal()">ยกเลิก</button>
+        </div>
+
+        </div>
+    </div>
+    </div>
+
+    <!-- Modal Backdrop -->
+    <div class="modal-backdrop fade" 
+        [class.show]="modalMode !== null" 
+        [style.display]="modalMode !== null ? 'block' : 'none'">
+    </div>
+</body>

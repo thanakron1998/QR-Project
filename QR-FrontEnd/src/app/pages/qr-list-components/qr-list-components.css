@@ -1,0 +1,6 @@
+::ng-deep #qrTable thead tr {
+    background-color: deepskyblue;
+}
+::ng-deep .btn-success, .btn-danger, .btn-primary {
+    width: 80px;
+}
